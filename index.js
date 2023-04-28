@@ -10,14 +10,20 @@ let flippedCards = [];
 //Fonctions pour choisr le nombre de cartes
 function nbcards() {
   const selectedCards = parseInt(nbCardsInput.value, 10);
-  if (selectedCards % 2 === 0) {
+  if (selectedCards < 4 || selectedCards > 20) {
+    msg.innerHTML = `<h3>Vous devez choisir un nombre entre 4 et 20</h3>`;
+    numCards = false;
+  } else if (selectedCards % 2 === 0) {
     msg.innerHTML = `<h3>Vous avez choisi ${selectedCards} cartes</h3>`;
     numCards = true;
   } else {
-    msg.innerHTML = `<h3>Vous devez choisir un nombre paire</h3>`;
+    msg.innerHTML = `<h3>Vous devez choisir un nombre pair</h3>`;
     container.innerHTML = "";
     numCards = false;
   }
+  setTimeout(() => {
+    msg.innerHTML = "Veuillez choisir le nombre de cartes pour votre partie";
+  }, 2000);
 }
 
 //Fonction pour générer les cartes celon le nombre choisi
@@ -111,8 +117,7 @@ function checkMatch() {
   const id1 = card1.querySelector(".card_face-back").id;
   const id2 = card2.querySelector(".card_face-back").id;
 
-  const isMatch = id1 === id2;
-  if (isMatch) {
+  if (id1 === id2) {
     card1.removeEventListener("click", flipCard);
     card2.removeEventListener("click", flipCard);
     flippedCards = [];
