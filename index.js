@@ -6,6 +6,7 @@ const nbCardsInput = document.querySelector(".nbCards");
 
 let numCards = false;
 let flippedCards = [];
+let pairsFound = 0;
 
 //Fonctions pour choisr le nombre de cartes
 function nbcards() {
@@ -21,12 +22,9 @@ function nbcards() {
     container.innerHTML = "";
     numCards = false;
   }
-  setTimeout(() => {
-    msg.innerHTML = "Veuillez choisir le nombre de cartes pour votre partie";
-  }, 2000);
 }
 
-//Fonction pour générer les cartes celon le nombre choisi
+// Fonction pour générer les cartes selon le nombre choisi
 function generatorCards() {
   const selectedCards = parseInt(nbCardsInput.value, 10);
   container.innerHTML = "";
@@ -65,6 +63,7 @@ function generatorCards() {
         </div>
       `;
     }
+    numCards = selectedCards;
   }
 }
 
@@ -77,7 +76,6 @@ function reset() {
 }
 
 //Fonction pour retourner les cartes
-
 function flipCard() {
   if (flippedCards.length < 2) {
     this.classList.toggle("is-flipped");
@@ -110,7 +108,7 @@ function randomId() {
   return id;
 }
 
-//Fonction pour vérifier si les cartes sont identiques
+// Fonction pour vérifier si les cartes sont identiques
 function checkMatch() {
   const card1 = flippedCards[0];
   const card2 = flippedCards[1];
@@ -122,6 +120,13 @@ function checkMatch() {
     card2.removeEventListener("click", flipCard);
     flippedCards = [];
     msg.innerHTML = "<h3>Bravo vous avez trouvé une paire</h3>";
+    pairsFound++;
+    if (pairsFound === numCards / 2) {
+      msg.innerHTML =
+        "<h3>Félicitations, vous avez trouvé toutes les paires !</h3>";
+      msg.style.color = `${randomColor()}`;
+      msg.style.fontSize = "2rem";
+    }
   } else {
     setTimeout(() => {
       card1.classList.remove("is-flipped");
@@ -132,6 +137,7 @@ function checkMatch() {
   }
 }
 
+      
 //Evenements
 container.addEventListener("click", (event) => {
   const clickedCard = event.target.closest(".card_inner");
